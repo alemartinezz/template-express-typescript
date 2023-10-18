@@ -1,6 +1,8 @@
 import { Sequelize } from 'sequelize';
-import { initpatientModel } from '../../models/patient';
+import { initPatientModel } from '../../models/patient';
+import { initUserModel } from '../../models/user';
 
 export const initModels = (sequelize: Sequelize) => {
-	initpatientModel(sequelize);
+	initUserModel(sequelize);
+	initPatientModel(sequelize);
 };

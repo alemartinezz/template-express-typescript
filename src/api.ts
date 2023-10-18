@@ -1,11 +1,12 @@
 import express, { Application, RequestHandler, Router, ErrorRequestHandler } from 'express';
 import cors from 'cors';
 import healthcheckRouter from './routes/healthcheck';
-import patientsRouter from './routes/patient';
 import { responseHandler } from './middlewares/responseHandler';
 import { Winston } from './services/logger';
 import { toCamelCase } from './utils/utils';
 import { Database } from './services/database/sequelize';
+import { Firebase } from './services/firebase';
+import usersRouter from './routes/users';
 
 // Services
 export const services: { [key: string]: any } = {
@@ -91,13 +92,13 @@ const expressApi = new Express({
 	],
 	routes: [
 		['/healthcheck', healthcheckRouter],
-		['/patients', patientsRouter]
+		['/users', usersRouter]
 	],
 	middleWares: [responseHandler]
 });
 
 expressApi
-	.initServices([new Database()])
+	.initServices([new Database(), new Firebase()])
 	.then(() => {
 		expressApi.listen();
 	})
