@@ -3,11 +3,11 @@
 Nodejs, Expressjs, Typescript, Sequelize dockerized postgresql template.
 
 ```shell
-npm run docker-start
+docker-compose build --no-cache && docker-compose up --remove-orphans
 ```
 
 Example query:
 
 ```shell
-http://localhost:3000/api/patients
+http://localhost:3000/api/users
 ```

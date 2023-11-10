@@ -23,6 +23,7 @@ FROM node:20 AS production
 WORKDIR /api
 COPY --from=build /api/dist /api/dist
 COPY --from=build /api/node_modules /api/node_modules
+COPY --from=build /api/serviceAccountKey.json /api/serviceAccountKey.json
 
 # Expose port (e.g., 3000) that the api listens on
 EXPOSE 3000

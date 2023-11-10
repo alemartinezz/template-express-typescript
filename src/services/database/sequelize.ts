@@ -1,7 +1,6 @@
 // dbService.ts
 import { Dialect, Sequelize } from 'sequelize';
-import { initModels } from './initModels';
-import { loadSampleData } from './sampleData';
+import { initUserModel } from '../../models/user';
 
 export class Database {
 	public sequelize: Sequelize;
@@ -10,9 +9,9 @@ export class Database {
 		const sequelizeConfig = {
 			host: process.env.DB_HOST,
 			port: parseInt(`${process.env.DB_PORT}`),
-			username: process.env.DB_USERNAME,
+			username: process.env.DB_USER,
 			password: process.env.DB_PASSWORD,
-			database: process.env.DB_NAME,
+			database: process.env.DB_DB,
 			dialect: 'postgres' as Dialect,
 			dialectOptions: {
 				useUTC: false,
@@ -27,12 +26,14 @@ export class Database {
 	async init() {
 		try {
 			await this.sequelize.authenticate();
-			initModels(this.sequelize);
+			this.initModels(this.sequelize);
 			await this.sequelize.sync({ force: true });
-			await loadSampleData();
 		} catch (err) {
-			console.error('Unable to connect to the database:', err);
 			throw err;
 		}
+	}
+
+	async initModels(sequelize: Sequelize) {
+		initUserModel(sequelize);
 	}
 }
